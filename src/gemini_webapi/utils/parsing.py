@@ -69,6 +69,11 @@ def extract_json_from_response(text: str) -> list:
             f"Input text is expected to be a string, got {type(text).__name__} instead."
         )
 
+    # Strip XSSI protection prefix if present
+    xssi_prefix = ")]}'"
+    if text.startswith(xssi_prefix):
+        text = text[len(xssi_prefix) :]
+
     # Find the first line which is valid JSON
     for line in text.splitlines():
         try:
